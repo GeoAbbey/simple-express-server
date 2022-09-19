@@ -13,5 +13,27 @@ pipeline {
       }
     }
 
+    stage('Build Docker') {
+      steps {
+        sh 'docker build -f Dockerfile . -t geoabbey/simple-express-server:latest'
+      }
+    }
+
+    stage('Log into DockerHub') {
+      environment {
+        DOCKERHUB_USER = 'geoabbey'
+        DOCKERHUB_PASSWORD = 'lollipop199'
+      }
+      steps {
+        sh 'docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD'
+      }
+    }
+
+    stage('Push to DockerHub') {
+      steps {
+        sh 'docker push geoabbey/simple-express-server:latest'
+      }
+    }
+
   }
 }
