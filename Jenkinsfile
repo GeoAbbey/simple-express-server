@@ -35,5 +35,11 @@ pipeline {
       }
     }
 
+    stage('Run Docker Image') {
+      steps {
+        sh 'docker run -p 4000:4000 -d -name sample-app geoabbey/simple-express-server:latest'
+      }
+    }
+
   }
 }
