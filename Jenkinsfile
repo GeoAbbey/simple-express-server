@@ -15,7 +15,7 @@ pipeline {
 
     stage('Build Docker') {
       steps {
-        sh 'docker build -f Dockerfile .'
+        sh 'docker build -f Dockerfile . -t geoabbey/simple-express-server:latest'
       }
     }
 
