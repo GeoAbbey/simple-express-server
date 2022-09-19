@@ -29,5 +29,11 @@ pipeline {
       }
     }
 
+    stage('Push to DockerHub') {
+      steps {
+        sh 'docker push geoabbey/simple-express-server:latest'
+      }
+    }
+
   }
 }
