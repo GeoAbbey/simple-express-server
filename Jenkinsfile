@@ -15,7 +15,7 @@ pipeline {
 
     stage('Build Docker') {
       steps {
-        sh 'docker build -f simple-express-server/Dockerfile .'
+        sh 'docker build -f Dockerfile .'
       }
     }
 
