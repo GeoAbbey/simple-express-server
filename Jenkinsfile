@@ -37,8 +37,7 @@ pipeline {
 
     stage('Remove the running container') {
       steps {
-        sh '''docker stop geoabbey/simple-express-server:latest
-docker rm --force geoabbey/simple-express-server:latest'''
+        sh 'ls'
       }
     }
 
