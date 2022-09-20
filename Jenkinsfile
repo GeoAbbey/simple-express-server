@@ -37,7 +37,7 @@ pipeline {
 
     stage('Remove the running container') {
       steps {
-        sh 'ls'
+        sh 'docker rm --force express-server'
       }
     }
 
