@@ -43,7 +43,7 @@ pipeline {
 
     stage('Run Docker Image') {
       steps {
-        sh 'docker run -p 4000:4000 -d geoabbey/simple-express-server:latest'
+        sh 'docker run -p 4000:4000 -d --name express-server geoabbey/simple-express-server:latest'
       }
     }
 
