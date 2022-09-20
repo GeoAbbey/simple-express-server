@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  triggers {
-    githubPush()
-  }
   stages {
     stage('Checkout Code') {
       steps {
@@ -37,7 +34,7 @@ pipeline {
         sh 'docker push geoabbey/simple-express-server:latest'
       }
     }
-    
+
     stage('Remove the running container') {
       steps {
         sh 'docker rm --force geoabbey/simple-express-server:latest'
@@ -50,5 +47,8 @@ pipeline {
       }
     }
 
+  }
+  triggers {
+    githubPush()
   }
 }
