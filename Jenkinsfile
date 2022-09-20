@@ -37,7 +37,7 @@ pipeline {
 
     stage('Remove the running container') {
       steps {
-        sh '''fuser -n tcp -k 4000 
+        sh '''docker stop geoabbey/simple-express-server:latest
 docker rm --force geoabbey/simple-express-server:latest'''
       }
     }
