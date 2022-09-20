@@ -37,6 +37,12 @@ pipeline {
         sh 'docker push geoabbey/simple-express-server:latest'
       }
     }
+    
+    stage('Remove the running container') {
+      steps {
+        sh 'docker rm --force geoabbey/simple-express-server:latest'
+      }
+    }
 
     stage('Run Docker Image') {
       steps {
