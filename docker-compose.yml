@@ -4,6 +4,8 @@ services:
     image: "geoabbey/express-server:production"
     env_file:
      - .env-production.txt
+    ports:
+     - "4000:4000"
     restart: always
     networks:
       production:
