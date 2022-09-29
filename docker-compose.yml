@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  api-production:
+    image: "geoabbey/express-server:production"
+    env_file:
+     - .env-production.txt
+    restart: always
+    networks:
+      production:
+
+  postgres-production:
+    image: postgres:13.6
+    env_file:
+     - .env-pg-production.txt
+    volumes:
+      - "/docker/data/postgres-production:/var/lib/postgresql/data"
+    ports:
+     - "5432:5432"
+    restart: always
+    networks:
+      production:
+
+  mongodb-production:
+    image: mongo:4.4.12-focal
+    env_file:
+     - .env-mongo-production.txt
+    volumes:
+      - "/docker/data/mongodb-production:/data/db"
+    restart: always
+    ports:
+     - "27017:27017"
+    networks:
+      production:
+
+networks:
+  production:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"

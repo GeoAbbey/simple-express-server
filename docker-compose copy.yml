@@ -1,0 +1,157 @@
+version: '3'
+services:
+  api-development:
+    image: "deveote/zapplayer-be:develop"
+    labels:
+     - traefik.frontend.rule=Host:api.zapplawyerbeta.com.ng
+    env_file:
+     - .env-development.txt
+    restart: always
+    networks:
+      development:
+
+  front-development:
+    image: "deveote/zapplayer-fe:develop"
+    labels:
+     - traefik.frontend.rule=Host:zapplawyerbeta.com.ng,www.zapplawyerbeta.com.ng
+    restart: always
+    networks:
+      development:
+
+  admin-development:
+    image: "deveote/zapplayer-admin:develop"
+    labels:
+     - traefik.frontend.rule=Host:admin.zapplawyerbeta.com.ng
+    restart: always
+    networks:
+      development:
+
+  api-staging:
+    image: "deveote/zapplayer-be:release"
+    labels:
+     - traefik.frontend.rule=Host:api.apprescuebeta.com.ng
+    env_file:
+     - .env-staging.txt
+    restart: always
+    networks:
+      staging:
+
+  front-staging:
+    image: "deveote/zapplayer-fe:release"
+    labels:
+     - traefik.frontend.rule=Host:apprescuebeta.com.ng,www.apprescuebeta.com.ng
+    restart: always
+    networks:
+      staging:
+
+  admin-staging:
+    image: "deveote/zapplayer-admin:release"
+    labels:
+     - traefik.frontend.rule=Host:admin.apprescuebeta.com.ng
+    restart: always
+    networks:
+      staging:
+
+  postgres-development:
+    image: postgis/postgis:13-3.2
+    #image: postgres:13.6
+    env_file:
+     - .env-pg-development.txt
+    volumes:
+      - "/docker/data/postgres-development:/var/lib/postgresql/data"
+      - "/docker/data/letsencrypt/:/etc/letsencrypt/"
+    labels:
+     - traefik.enable=false
+    ports:
+     - "5432:5432"
+    restart: always
+    command: -c ssl=on -c ssl_cert_file=/etc/letsencrypt/fullchain.pem -c ssl_key_file=/etc/letsencrypt/privkey.pem
+    networks:
+      development:
+
+  postgres-staging:
+    image: postgis/postgis:13-3.2
+    #image: postgres:13.6
+    env_file:
+     - .env-pg-staging.txt
+    volumes:
+      - "/docker/data/postgres-staging:/var/lib/postgresql/data"
+      - "/docker/data/letsencrypt:/etc/letsencrypt"
+    labels:
+     - traefik.enable=false
+    ports:
+     - "5433:5432"
+    restart: always
+    command: -c ssl=on -c ssl_cert_file=/etc/letsencrypt/fullchain.pem -c ssl_key_file=/etc/letsencrypt/privkey.pem
+    networks:
+      staging:
+
+  mongodb-development:
+    image: mongo:4.4.12-focal
+    env_file:
+     - .env-mongo-development.txt
+    volumes:
+      - "/docker/data/mongodb-development:/data/db"
+    restart: always
+    labels:
+     - traefik.enable=false
+    ports:
+     - "27017:27017"
+    networks:
+      development:
+
+  mongodb-staging:
+    image: mongo:4.4.12-focal
+    env_file:
+     - .env-mongo-staging.txt
+    volumes:
+      - "/docker/data/mongodb-staging:/data/db"
+    labels:
+     - traefik.enable=false
+    ports:
+     - "27018:27017"
+    restart: always
+    networks:
+      staging:
+
+  traefik:
+    image: traefik:v1.7
+    command:
+     - --api
+     - --docker
+     - --docker.watch
+     - "--entryPoints=Name:http Address::80 Redirect.EntryPoint:https"
+     - "--entryPoints=Name:https Address::443 TLS"
+     - --defaultentrypoints=http,https
+     - --acme
+     - --acme.onhostrule
+     - --acme.ondemand
+     - --acme.email=abiodun@deveote.com
+     - --acme.storage=acme.json
+     - --acme.entrypoint=https
+     - --acme.tlschallenge
+     - --acme.acmelogging
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+     - /etc/localtime:/etc/localtime:ro
+     - /var/run/docker.sock:/var/run/docker.sock
+     - .acme.json:/acme.json
+    labels:
+     - traefik.enable=false
+    restart: always
+    networks:
+      staging:
+      development:
+
+
+networks:
+  development:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+  staging:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
