@@ -16,8 +16,8 @@ jobs:
     - name: Build production container
       run: docker build . -t geoabbey/express-server:production --build-arg=NODE_ENV=production
       if: contains('refs/heads/main',github.ref)
-    - name: Navigate to compose folder
-      run: cd docker/compose
+    # - name: Navigate to compose folder
+    #   run: cd docker/compose
     - name: List everything inside
       run: ls
     - name: Reload containers
