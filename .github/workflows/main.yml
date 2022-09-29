@@ -16,3 +16,7 @@ jobs:
     - name: Build production container
       run: docker build . -t geoabbey/express-server:production --build-arg=NODE_ENV=production
       if: contains('refs/heads/main',github.ref)
+    - name: Remove production container
+      run: docker rm --force express-server
+    - name: Run production container
+      run: docker run -p 4000:4000 -d --name express-server geoabbey/express-server:production
