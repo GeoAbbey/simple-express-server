@@ -17,4 +17,4 @@ jobs:
       run: docker build . -t geoabbey/express-server:production --build-arg=NODE_ENV=production
       if: contains('refs/heads/main',github.ref)
     - name: Reload containers
-      run: docker compose /docker/compose/docker-compose.yml up
+      run: docker compose /docker/compose/docker-compose.yml up -d
