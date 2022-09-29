@@ -21,4 +21,5 @@ jobs:
     - name: List everything inside
       run: ls
     - name: Reload containers
-      run: docker compose -f ~/docker/compose/docker-compose.yml up -d
+      # run: docker compose -f ~/docker/compose/docker-compose.yml up -d
+      run: cd /docker/compose && docker compose up -d
