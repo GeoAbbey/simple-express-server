@@ -3,15 +3,15 @@ services:
   api-production:
     image: "geoabbey/express-server:production"
     env_file:
-     - .env-production.txt
+     - .env-backend-production.txt
     ports:
      - "4000:4000"
     restart: always
     networks:
-      production:
+      - production
 
   postgres-production:
-    image: postgres:13.6
+    image: postgres:14-alpine
     env_file:
      - .env-pg-production.txt
     volumes:
@@ -20,10 +20,10 @@ services:
      - "5432:5432"
     restart: always
     networks:
-      production:
+      - production
 
   mongodb-production:
-    image: mongo:4.4.12-focal
+    image: mongo:6.0.2-focal
     env_file:
      - .env-mongo-production.txt
     volumes:
@@ -32,7 +32,7 @@ services:
     ports:
      - "27017:27017"
     networks:
-      production:
+      - production
 
 networks:
   production:
