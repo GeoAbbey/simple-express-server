@@ -8,7 +8,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend-production.rule=Host(`api.ismail.com.ng`)
-      - traefik.http.routers.backend-production.entrypoints=production
+      - traefik.http.routers.backend-production.entrypoints=web
     restart: always
     networks:
       - production
@@ -21,7 +21,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend-develop.rule=Host(`dev.api.ismail.com.ng`)
-      - traefik.http.routers.backend-develop.entrypoints=develop
+      - traefik.http.routers.backend-develop.entrypoints=web
     restart: always
     networks:
       - develop
@@ -68,8 +68,7 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.file.filename=/dynamic.yaml
-      - --entrypoints.production.address=:80
-      - --entrypoints.develop.address=:80
+      - --entrypoints.web.address=:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dynamic.yaml:/dynamic.yaml
