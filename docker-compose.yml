@@ -13,6 +13,19 @@ services:
     networks:
       - production
 
+  backend-develop:
+    image: "geoabbey/express-server:develop"
+    container_name: backend-develop
+    env_file:
+     - .env-backend-develop.txt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend-develop.rule=Host(`dev.api.ismail.com.ng`)
+      - traefik.http.routers.backend-develop.entrypoints=develop
+    restart: always
+    networks:
+      - develop
+
   postgres-production:
     image: postgres:14-alpine
     container_name: postgres-production
@@ -56,12 +69,13 @@ services:
       - --providers.docker.exposedbydefault=false
       - --providers.file.filename=/dynamic.yaml
       - --entrypoints.production.address=:80
- 
+      - --entrypoints.develop.address=:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dynamic.yaml:/dynamic.yaml
     networks:
       - production
+      - develop
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.rule=Host(`monitor.ismail.com.ng`)
@@ -70,6 +84,11 @@ services:
 networks:
   production:
     name: production
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+  develop:
+    name: develop
     driver: bridge
     driver_opts:
       com.docker.network.enable_ipv6: "false"
