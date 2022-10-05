@@ -26,3 +26,5 @@ Jenkinsfile
 
 # Sentry
 .sentryclirc
+
+/.github
