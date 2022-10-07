@@ -13,18 +13,18 @@ services:
     networks:
       - production
 
-  backend-develop:
-    image: "geoabbey/express-server:develop"
-    container_name: backend-develop
-    env_file:
-     - .env-backend-develop.txt
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.backend-develop.rule=Host(`devapi.ismail.com.ng`)
-      - traefik.http.routers.backend-develop.entrypoints=web
-    restart: always
-    networks:
-      - develop
+  # backend-develop:
+  #   image: "geoabbey/express-server:develop"
+  #   container_name: backend-develop
+  #   env_file:
+  #    - .env-backend-develop.txt
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.backend-develop.rule=Host(`devapi.ismail.com.ng`)
+  #     - traefik.http.routers.backend-develop.entrypoints=web
+  #   restart: always
+  #   networks:
+  #     - develop
 
   postgres-production:
     image: postgres:14-alpine
