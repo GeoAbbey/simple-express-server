@@ -20,7 +20,7 @@ services:
      - .env-backend-develop.txt
     labels:
       - traefik.enable=true
-      - traefik.http.routers.backend-develop.rule=Host(`dev.api.ismail.com.ng`)
+      - traefik.http.routers.backend-develop.rule=Host(`devapi.ismail.com.ng`)
       - traefik.http.routers.backend-develop.entrypoints=web
     restart: always
     networks:
@@ -91,3 +91,6 @@ networks:
     driver: bridge
     driver_opts:
       com.docker.network.enable_ipv6: "false"
+
+      # docker build -t vuejs-cookbook/dockerize-vuejs-app .
+      # docker run -it -p 8080:80 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
