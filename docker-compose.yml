@@ -8,10 +8,23 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend-production.rule=Host(`api.ismail.com.ng`)
-      - traefik.http.routers.backend-production.entrypoints=production
+      - traefik.http.routers.backend-production.entrypoints=web
     restart: always
     networks:
       - production
+
+  backend-develop:
+    image: "geoabbey/express-server:develop"
+    container_name: backend-develop
+    env_file:
+     - .env-backend-develop.txt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend-develop.rule=Host(`devapi.ismail.com.ng`)
+      - traefik.http.routers.backend-develop.entrypoints=web
+    restart: always
+    networks:
+      - develop
 
   postgres-production:
     image: postgres:14-alpine
@@ -55,13 +68,13 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.file.filename=/dynamic.yaml
-      - --entrypoints.production.address=:80
- 
+      - --entrypoints.web.address=:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dynamic.yaml:/dynamic.yaml
     networks:
       - production
+      - develop
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.rule=Host(`monitor.ismail.com.ng`)
@@ -73,3 +86,11 @@ networks:
     driver: bridge
     driver_opts:
       com.docker.network.enable_ipv6: "false"
+  develop:
+    name: develop
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+
+      # docker build -t vuejs-cookbook/dockerize-vuejs-app .
+      # docker run -it -p 8080:80 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
